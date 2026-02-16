@@ -9,8 +9,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # --- 🖼️ APKA PREMIUM CARD IMAGE ---
-# Maine aapka diya hua link yahan set kar diya hai
-CARD_IMAGE_URL = "https://github.com/abhaysmartautomation/abhay-automation-bot/blob/main/Screenshot_17-2-2026_0613_.jpeg?raw=true"
+CARD_IMAGE_URL = "https://raw.githubusercontent.com/abhaysmartautomation/abhay-automation-bot/main/Screenshot_17-2-2026_0613_.jpeg"
 
 # --- SPELLING CHECKER ---
 def is_match(user_message, keywords):
@@ -21,17 +20,22 @@ def is_match(user_message, keywords):
             return True
     return False
 
+# --- 👇 YAHAN GALTI THI (AB FIX HAI) ---
+# Humne 'GET' add kar diya hai taaki MacroDroid connect kar sake
 @app.route("/bot", methods=['GET', 'POST'])
 def bot():
     try:
+        # MacroDroid 'msg' bhejta hai, Twilio 'Body'. Hum dono check karenge.
         incoming_msg = request.values.get('msg', '').lower().strip()
+        if not incoming_msg:
+            incoming_msg = request.values.get('Body', '').lower().strip()
+
         logger.info(f"📩 Input: {incoming_msg}")
 
         response_text = ""
 
-        # --- 1. WELCOME MENU (Card + Menu) ---
+        # --- 1. WELCOME MENU ---
         if is_match(incoming_msg, ['hi', 'hello', 'hey', 'start', 'namaste', 'menu', 'shuru']):
-            
             menu_text = (
                 "🎨 *PANDEY COLOUR* 🎨\n"
                 "_Premium Interior & Exterior Finishes_\n"
@@ -45,11 +49,9 @@ def bot():
                 "💸 *Payment* - Bank Details ke liye\n"
                 "📍 *Address* - Shop Address ke liye"
             )
-            
-            # Pehle Image link jayega, fir Text
             response_text = f"{CARD_IMAGE_URL}\n\n{menu_text}"
 
-        # --- 2. PAYMENT BRANCH ---
+        # --- 2. PAYMENT ---
         elif is_match(incoming_msg, ['payment', 'pay', 'upi', 'bank', 'paise']):
             response_text = (
                 "💸 *Payment Details* 💸\n\n"

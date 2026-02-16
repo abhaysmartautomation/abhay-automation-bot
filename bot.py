@@ -8,9 +8,9 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# --- 🖼️ IMAGE LINK ---
-# Yahan wo link dalna jo aapne Step 2 mein GitHub se copy kiya
-CARD_IMAGE_URL = "https://raw.githubusercontent.com/username/repo/main/card.jpg" 
+# --- 🖼️ APKA PREMIUM CARD IMAGE ---
+# Maine aapka diya hua link yahan set kar diya hai
+CARD_IMAGE_URL = "https://github.com/abhaysmartautomation/abhay-automation-bot/blob/main/Screenshot_17-2-2026_0613_.jpeg?raw=true"
 
 # --- SPELLING CHECKER ---
 def is_match(user_message, keywords):
@@ -29,10 +29,9 @@ def bot():
 
         response_text = ""
 
-        # --- 1. WELCOME MENU (Pandey Colour Card Style) ---
-        if is_match(incoming_msg, ['hi', 'hello', 'hey', 'start', 'namaste', 'menu']):
+        # --- 1. WELCOME MENU (Card + Menu) ---
+        if is_match(incoming_msg, ['hi', 'hello', 'hey', 'start', 'namaste', 'menu', 'shuru']):
             
-            # Ye Text bilkul aapke card jaisa design kiya hai
             menu_text = (
                 "🎨 *PANDEY COLOUR* 🎨\n"
                 "_Premium Interior & Exterior Finishes_\n"
@@ -41,22 +40,14 @@ def bot():
                 "📞 +91 70467 69047\n"
                 "📞 +91 90167 21639\n"
                 "----------------------------------\n"
-                "✨ *Our Expertise:*\n"
-                "🔹 Royal Play & Texture Designs\n"
-                "🔹 PU Polish & Lamination Work\n"
-                "🔹 Waterproofing Solutions\n"
-                "🔹 Complete Project Management\n\n"
                 "👇 *Kripya ek option type karein:*\n"
                 "📋 *Rate List* - Rates dekhne ke liye\n"
                 "💸 *Payment* - Bank Details ke liye\n"
                 "📍 *Address* - Shop Address ke liye"
             )
             
-            # Agar image link hai to image + text bhejo
-            if "http" in CARD_IMAGE_URL and "your-image" not in CARD_IMAGE_URL:
-                response_text = f"{CARD_IMAGE_URL}\n\n{menu_text}"
-            else:
-                response_text = menu_text
+            # Pehle Image link jayega, fir Text
+            response_text = f"{CARD_IMAGE_URL}\n\n{menu_text}"
 
         # --- 2. PAYMENT BRANCH ---
         elif is_match(incoming_msg, ['payment', 'pay', 'upi', 'bank', 'paise']):

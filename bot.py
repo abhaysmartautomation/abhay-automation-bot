@@ -1,95 +1,136 @@
 from flask import Flask, request
-import logging
-from difflib import get_close_matches
+import re
 
 app = Flask(__name__)
 
-# --- LOGS SETUP ---
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# =========================================================
+# ⚙️ BUSINESS SETTINGS (Pandey Ji VIP Config)
+# =========================================================
+BUSINESS_NAME  = "PANDEY COLOUR CONTRACTOR"
+PRIMARY_PHONE  = "7046769047"
+SECOND_PHONE   = "9016721639"
+FULL_ADDRESS   = "202/-2krishnakunj, society palanpur jakaatnaka, Surat."
+MAP_LINK       = "http://maps.google.com/?q=Suman+Chandan+Complex+Surat"
+WHATSAPP_LINK  = f"https://wa.me/91{PRIMARY_PHONE}"
 
-# --- 🖼️ IMAGE LINK ---
-CARD_IMAGE_URL = "https://raw.githubusercontent.com/abhaysmartautomation/abhay-automation-bot/main/Screenshot_17-2-2026_0613_.jpeg"
+# 📷 DESIGN ALBUM (Pinterest - High Quality)
+ALBUM_LINK     = "https://in.pinterest.com/search/pins/?q=royal%20play%20texture%20designs" 
 
-# --- SPELLING CHECKER ---
-def is_match(user_message, keywords):
-    user_words = user_message.split()
-    for word in user_words:
-        matches = get_close_matches(word, keywords, n=1, cutoff=0.8)
-        if matches:
-            return True
-    return False
-
-# --- 👇 IMPORTANT: GET AUR POST DONO ALLOW KIYE ---
-@app.route("/bot", methods=['GET', 'POST'])
-def bot():
+@app.route('/whatsapp', methods=['GET'])
+def whatsapp_reply():
     try:
-        # MacroDroid 'msg' bhejta hai
-        incoming_msg = request.values.get('msg', '').lower().strip()
-        
-        # Agar msg khali hai to body check karo (Backup)
-        if not incoming_msg:
-            incoming_msg = request.values.get('Body', '').lower().strip()
+        raw_msg = request.args.get('msg', '')
+        if not raw_msg or not raw_msg.strip():
+            return main_menu()
 
-        logger.info(f"📩 Input: {incoming_msg}")
-        response_text = ""
+        msg = raw_msg.strip()
+        msg_lower = msg.lower()
 
-        # --- 1. MENU ---
-        if is_match(incoming_msg, ['hi', 'hello', 'hey', 'start', 'namaste', 'menu']):
-            menu_text = (
-                "🎨 *PANDEY COLOUR* 🎨\n"
-                "_Premium Interior & Exterior Finishes_\n"
-                "----------------------------------\n"
-                "👤 *Markandey Pandey* (Senior Contractor)\n"
-                "📞 +91 70467 69047\n"
-                "📞 +91 90167 21639\n"
-                "----------------------------------\n"
-                "👇 *Kripya ek option type karein:*\n"
-                "📋 *Rate List* - Rates dekhne ke liye\n"
-                "💸 *Payment* - Bank Details ke liye\n"
-                "📍 *Address* - Shop Address ke liye"
-            )
-            response_text = f"{CARD_IMAGE_URL}\n\n{menu_text}"
+        # 🧠 SMART PATTERNS (Relatable words & Typos)
+        # 1. Photos/Designs
+        photo_pattern   = r"(photo|pic|image|design|color|colour|dekhna|portfolio|kaam|work|sample|album|catalogue|album|poto|fotto)"
+        # 2. Rates/Price (VIP Treatment Branch)
+        rate_pattern    = r"(rate|price|paisa|kitna|cost|kharcha|budget|estimate|bill|quotation|bhav|charges|money|pese|paisa|rait|prisce)"
+        # 3. Address/Contact
+        contact_pattern = r"(address|location|shop|office|contact|number|call|baat|milna|visit|jageh|loction|adrss|no|phone)"
+        # 4. Greetings
+        greet_pattern   = r"^(hi|hello|hii|hey|namaste|menu|start|helo|hy|yo|ram ram)$"
 
-        # --- 2. PAYMENT ---
-        elif is_match(incoming_msg, ['payment', 'pay', 'upi', 'bank']):
-            response_text = (
-                "💸 *Payment Details* 💸\n\n"
-                "📱 *Mobile:* `9016721639`\n"
-                "🏦 *UPI ID:* `7046769047@ybl`\n"
-                "✅ Screenshot bhejna na bhulein!"
-            )
+        # =====================================================
+        # 👇 BRANCHING LOGIC (Professional & Attractive)
+        # =====================================================
 
-        # --- 3. RATE LIST ---
-        elif 'list' in incoming_msg and is_match(incoming_msg, ['rate', 'price']):
-            response_text = (
-                "📋 *Standard Rate List (Per Sq. Ft.)*\n"
-                "------------------------------\n"
-                "🔸 *Plastic Paint:* ₹12 - ₹15\n"
-                "🔸 *Royal Shine:* ₹22 - ₹25\n"
-                "🔸 *Texture Work:* ₹50 se shuru\n"
-                "🔸 *Putty Work:* ₹8 - ₹10\n"
-                "------------------------------\n"
-                "⚠️ *Best Rate Guaranteed*"
-            )
+        # --- 1. RATE & PRICE (The "Qualify" Branch) ---
+        if re.search(rate_pattern, msg_lower):
+            return f"""💎 *BEST RATES & QUOTATION*
+━━━━━━━━━━━━━━━━━━━
+Namaste! 🙏
 
-        # --- 4. ADDRESS ---
-        elif is_match(incoming_msg, ['address', 'location', 'shop', 'contact']):
-            response_text = (
-                "📍 *Pandey Colour*\n"
-                "211/-2 Krishnakunj Society,\n"
-                "Palanpur Jakatnaka, Surat."
-            )
-        
-        # --- 5. FALLBACK ---
+Sir/Ma'am, hum *Quality Work* mein believe karte hain. Sabse *Professional aur Best Rate* ke liye niche diye gaye number par message ya call karein.
+
+📞 *Contact for Best Deal:*
+👉 {PRIMARY_PHONE}
+👉 {SECOND_PHONE}
+
+💬 *WhatsApp:* {WHATSAPP_LINK}
+
+*Hamari Team aapko jald hi contact karegi aur site visit ke liye time fix karegi.* ✨
+━━━━━━━━━━━━━━━━━━━
+🏠 *Menu ke liye 'Hi' likhein*"""
+
+        # --- 2. PHOTOS & DESIGNS ---
+        elif re.search(photo_pattern, msg_lower):
+            return f"""🖼️ *DIGITAL DESIGN CATALOGUE*
+━━━━━━━━━━━━━━━━━━━
+Humare paas 500+ Latest Texture aur Colour Designs available hain.
+
+🎨 *Design Gallery Dekhein:*
+👇 *Click Here:*
+🔗 {ALBUM_LINK}
+
+(Jo design pasand aaye, uska screenshot lekar bhej dijiye)
+━━━━━━━━━━━━━━━━━━━
+🏠 *Menu ke liye 'Hi' likhein*"""
+
+        # --- 3. CONTACT / ADDRESS ---
+        elif re.search(contact_pattern, msg_lower):
+            return f"""📞 *CONTACT & LOCATION*
+━━━━━━━━━━━━━━━━━━━
+👨‍🎨 *{BUSINESS_NAME}*
+
+📍 *Office Address:*
+{FULL_ADDRESS}
+
+👇 *Google Map:*
+🔗 {MAP_LINK}
+
+📱 *Call Us:* {PRIMARY_PHONE} | {SECOND_PHONE}
+
+🕒 *Time:* 9:00 AM - 8:00 PM
+━━━━━━━━━━━━━━━━━━━
+🏠 *Menu ke liye 'Hi' likhein*"""
+
+        # --- 4. GREETINGS (Show Main Menu) ---
+        elif re.search(greet_pattern, msg_lower):
+            return main_menu()
+
+        # --- 5. UNKNOWN/GIBBERISH FILTER (The "Sorry" Branch) ---
         else:
-            response_text = "Maaf karein, samajh nahi aaya. Type: Rate List, Payment, or Address."
+            # Check for random gibberish (e.g., "akjsax,k")
+            # Pattern: No spaces and length > 12 OR no vowels and length > 4
+            if (len(msg_lower) > 12 and " " not in msg_lower) or (len(msg_lower) > 4 and not any(v in msg_lower for v in 'aeiou')):
+                sorry_msg = "❌ *SORRY!*\n━━━━━━━━━━━━━━━━━━━\nMujhe ye samajh nahi aaya. 😅\n\nPlease niche diye gaye options chuniye ya *Hi* likhein."
+                return f"{sorry_text}\n\n{main_menu()}"
+            else:
+                # Basic unknown fallback
+                return f"❌ *SORRY!*\nMujhe samajh nahi aaya. Kripya niche diye gaye options chuniye.\n\n{main_menu()}"
 
-        return response_text
+    except Exception:
+        return main_menu()
 
-    except Exception as e:
-        logger.error(f"❌ Error: {str(e)}")
-        return f"Error: {str(e)}"
+# 🏛️ Function: Main Menu (Simple & Professional)
+def main_menu():
+    return f"""🏛️ *{BUSINESS_NAME}* 🏛️
+━━━━━━━━━━━━━━━━━━━
+👋 *Namaste! Welcome.*
+Hum aapke ghar ko naya aur sundar roop dene ke liye taiyar hain. ✨
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+👇 *Jankari ke liye Option chuniye:*
+
+🎨 *Latest Designs (Photos)*
+(Type: 'Photo')
+
+💎 *Check Best Rates*
+(Type: 'Rate')
+
+📍 *Address & Contact*
+(Type: 'Contact')
+
+📞 *Direct Call*
+(Type: 'Call')
+
+━━━━━━━━━━━━━━━━━━━
+✨ *Quality Work. Trusted Name.*"""
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=10000)

@@ -1,113 +1,66 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
-import datetime
-import random
 
 app = Flask(__name__)
 
-# --- ⚙️ SETTINGS ---
-OWNER_PHONE = "+919016721639" 
-
-# --- 🕒 SMART GREETING ---
-def get_greeting():
-    hour = datetime.datetime.now().hour
-    if 5 <= hour < 12: return "Good Morning ☀️"
-    elif 12 <= hour < 17: return "Good Afternoon 🌤️"
-    elif 17 <= hour < 22: return "Good Evening 🌆"
-    else: return "Hello 👋"
-
-@app.route('/whatsapp', methods=['POST'])
+@app.route("/bot", methods=['POST'])
 def bot():
+    # User ka message small letters mein convert karte hain
     incoming_msg = request.values.get('Body', '').lower().strip()
+    
+    # Response object
     resp = MessagingResponse()
     msg = resp.message()
-    
-    greet = get_greeting()
 
-    # --- 🏠 MAIN MENU ---
-    if incoming_msg in ['hi', 'hello', 'start', 'menu', 'demo']:
-        reply = (
-            f"🤖 *{greet}! Ultimate Business Bot.*\n"
-            "━━━━━━━━━━━━━━━━━━━\n"
-            "Yeh bot calculation aur games bhi khel sakta hai!\n\n"
-            "💪 *Type 'Gym'* (Try BMI Calculator)\n"
-            "🍔 *Type 'Cafe'* (Try Discount Game)\n"
-            "🩺 *Type 'Dr'* (Try Symptom Check)\n\n"
-            "_Ek option chunein._"
+    # --- BRANCHING LOGIC ---
+
+    # 1. RATE LIST WALA BRANCH (Specific List)
+    # Agar user specifically "list" word use kare rate ke sath
+    if 'list' in incoming_msg and any(word in incoming_msg for word in ['rate', 'price', 'bhav']):
+        response_text = (
+            "📋 **Standard Rate List (Per Sq. Ft.)**\n\n"
+            "🔹 **Plastic Paint:** ₹12 - ₹15\n"
+            "🔹 **Royal Shine:** ₹22 - ₹25\n"
+            "🔹 **Texture Work:** ₹50 se shuru\n"
+            "🔹 **Putty Work:** ₹8 - ₹10\n\n"
+            "⚠️ *Note: Ye rates area aur condition ke hisaab se thoda upar-niche ho sakte hain.*"
         )
+        msg.body(response_text)
 
-    # =================================================
-    # 💪 GYM MODE
-    # =================================================
-    elif 'gym' in incoming_msg:
-        reply = (
-            "💪 *IRON FITNESS CLUB*\n"
-            "1️⃣ Membership Plans 💰\n"
-            "2️⃣ *Check Your BMI* 🧮\n"
-            "3️⃣ Diet Chart 🥗\n"
-            "_(Reply with 1, 2, or 3)_"
+    # 2. GENERAL RATE / PRICE INQUIRY (Professional Contact Msg)
+    # Agar user sirf rate/price puche bina list mange
+    elif any(word in incoming_msg for word in ['rate', 'price', 'paisa', 'cost', 'bhav', 'charge']):
+        response_text = (
+            "🎨 **Professional & Best Rates** 🎨\n\n"
+            "Market mein sabse behtareen service aur professional rates ke liye, humari team se direct baat karein.\n\n"
+            "📞 **Call/WhatsApp:** +91-98XXXXXXXX\n"
+            "✨ *Hum aapko site visit karke best quotation denge!*"
         )
-    elif incoming_msg == '1':
-        reply = "💰 Monthly: ₹1500 | Yearly: ₹12,000 (With AC)"
-    elif incoming_msg == '2':
-        reply = "🧮 Apna BMI janne ke liye aise likhein:\n*BMI 70 1.75*\n_(Weight kg mein aur Height meters mein)_"
-    elif 'bmi' in incoming_msg:
-        try:
-            parts = incoming_msg.split()
-            weight = float(parts[1])
-            height = float(parts[2])
-            bmi = round(weight / (height * height), 1)
-            reply = f"📊 *Result:*\nAapka BMI hai: *{bmi}*"
-        except:
-            reply = "❌ Format: *BMI 70 1.75*"
-    elif incoming_msg == '3':
-        reply = "🥗 *Diet:* Subah Oats, Dopahar Dal-Rice, Raat Salad."
+        msg.body(response_text)
 
-    # =================================================
-    # 🍔 CAFE MODE
-    # =================================================
-    elif 'cafe' in incoming_msg:
-        reply = (
-            "🍔 *TASTY BITES CAFE*\n"
-            "4️⃣ Menu Dekhein 📜\n"
-            "5️⃣ *Spin & Win Gift* 🎁\n"
-            "6️⃣ Book Table 🪑\n"
-            "_(Reply with 4, 5, or 6)_"
+    # 3. FANTAK / COLOR CARD WALA BRANCH
+    elif any(word in incoming_msg for word in ['fantak', 'card', 'shade', 'colour', 'color']):
+        response_text = (
+            "🎨 **Colour Shade Card (Fantak)**\n\n"
+            "Aap inmein se apna pasandida shade chun sakte hain:\n\n"
+            "1️⃣ **Asian Paints Royale**\n"
+            "2️⃣ **Berger Silk**\n"
+            "3️⃣ **Nerolac Impressions**\n\n"
+            "📷 Agar aapke paas koi photo hai design ki, toh yahan bhej dijiye."
         )
-    elif incoming_msg == '4':
-        reply = "📜 Pizza (₹200), Burger (₹100), Coffee (₹80)."
-    elif incoming_msg == '5':
-        gifts = ["🎉 Free Cookie! 🍪", "🎉 10% Off! 🏷️", "😢 Try Again."]
-        reply = random.choice(gifts)
-    elif incoming_msg == '6':
-        reply = "🪑 Table book karne ke liye naam bhejein."
-    elif len(incoming_msg) > 3 and 'book' not in incoming_msg and 'gym' not in incoming_msg:
-         # Fake Save Logic
-         reply = "✅ *Saved!* Aapka data Google Sheet mein save ho gaya hai."
+        msg.body(response_text)
 
-    # =================================================
-    # 🩺 DOCTOR MODE
-    # =================================================
-    elif 'dr' in incoming_msg:
-        reply = (
-            "🩺 *CITY HOSPITAL*\n"
-            "7️⃣ Appointment 📅\n"
-            "8️⃣ *Symptom Checker* 🤒\n"
-            "_(Reply with 7 or 8)_"
-        )
-    elif incoming_msg == '7':
-        reply = "📅 Call karein: " + OWNER_PHONE
-    elif incoming_msg == '8':
-        reply = "🤒 Bukhar hai to *'Fever'* likhein, Sar dard hai to *'Headache'*."
-    elif 'fever' in incoming_msg:
-        reply = "💊 Paracetamol lein aur aaram karein."
-
+    # 4. DEFAULT MESSAGE
     else:
-        reply = "🤖 *Smart Bot:* Samajh nahi aya. 'Hi' likhein."
+        msg.body(
+            "Namaste! 🙏\n"
+            "Kripya inme se kuch likh kar bhejein:\n\n"
+            "👉 **'Rate List'** - Rates ki list dekhne ke liye\n"
+            "👉 **'Rate'** - Best offer ke liye contact karein\n"
+            "👉 **'Fantak'** - Colour card dekhne ke liye"
+        )
 
-    msg.body(reply)
     return str(resp)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
-
+    app.run(debug=True, port=5000)

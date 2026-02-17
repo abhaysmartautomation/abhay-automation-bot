@@ -4,11 +4,11 @@ from twilio.twiml.messaging_response import MessagingResponse
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS SECTION (Apne Links Yahan Paste Karein)
+# 🛠️ SETTINGS SECTION (Apne Links Sirf Yahan Badle)
 # ==============================================================================
 
-# 1. Apni Rate List PDF ka Google Drive link yahan dalein
-RATE_PDF_LINK = "https://drive.google.com/your-pdf-link-here"
+# 1. Apni Rate List PDF ka Google Drive link yahan quotes " " ke beech dalein
+RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
 
 # 2. Apni Digital Visiting Card ka link yahan dalein
 VISITING_CARD_LINK = "https://your-visiting-card-link.com"

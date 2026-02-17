@@ -75,3 +75,42 @@ def bot():
     # --- 3. COLOR SELECTION ---
     elif incoming_msg == '3':
         response_text = (
+            "🎨 *Choose Your Perfect Shade*\n"
+            "━━━━━━━━━━━━━━━━━━\n\n"
+            "Apne ghar ke liye behtareen colour pasand karein:\n\n"
+            f"🌈 **Digital Shade Card:**\n{COLOR_LINK}\n\n"
+            "💡 *Tip:* Pasand kiye gaye colour ka code ya screenshot humein bhejein."
+        )
+        msg.body(response_text)
+
+    # --- 4. LATEST DESIGNS ---
+    elif incoming_msg == '4':
+        response_text = (
+            "🖼️ *Our Premium Portfolio*\n"
+            "━━━━━━━━━━━━━━━━━━\n\n"
+            "Humare pichle projects, Royal Play designs, aur textures ki jhalak dekhein:\n\n"
+            f"📂 **View Album:**\n{ALBUM_LINK}\n\n"
+            "🎥 Video call par live designs dekhne ke liye call karein."
+        )
+        msg.body(response_text)
+
+    # --- 5. PAYMENT ---
+    elif incoming_msg == '5':
+        response_text = (
+            "💸 *Payment Information*\n"
+            "━━━━━━━━━━━━━━━━━━\n\n"
+            "Payment karne ke liye neeche diye gaye details use karein:\n\n"
+            "🏦 **UPI ID:** `7046769047@ybl`\n"
+            "📱 **GPay / PhonePe:** 70467 69047\n\n"
+            "✅ *Payment ke baad screenshot bhejna na bhulein.*"
+        )
+        msg.body(response_text)
+
+    # --- ❌ ERROR / UNKNOWN INPUT ---
+    else:
+        msg.body("❌ Maaf karein, yeh option galat hai.\n\nMenu dekhne ke liye *'Hi'* likh kar bhejein.")
+
+    return str(resp)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)

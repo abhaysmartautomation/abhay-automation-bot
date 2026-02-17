@@ -87,13 +87,23 @@ elif incoming_msg == '3':
     msg.body(response_text)
 
     # --- 4. LATEST DESIGNS ---
+   # --- 4. LATEST DESIGNS (Using Brand Galleries) ---
     elif incoming_msg == '4':
         response_text = (
-            "🖼️ *Our Premium Portfolio*\n"
-            "━━━━━━━━━━━━━━━━━━\n\n"
-            "Humare pichle projects, Royal Play designs, aur textures ki jhalak dekhein:\n\n"
-            f"📂 **View Album:**\n{ALBUM_LINK}\n\n"
-            "🎥 Video call par live designs dekhne ke liye call karein."
+            "🖼️ *Our Expertise & Design Gallery* ✨\n"
+            "━━━━━━━━━━━━━━━━━━━━\n\n"
+            "Hum premium quality finishing mein expert hain. Aap neeche diye gaye links se apne ghar ke liye trendy designs pasand kar sakte hain:\n\n"
+            "🎭 **Royal Play & Wall Textures:**\n"
+            "https://www.asianpaints.com/products/paints-and-textures/wall-textures.html\n\n"
+            "💎 **Premium PU Polish & Interior Finishes:**\n"
+            "https://www.nerolac.com/inspiration/gallery.html\n\n"
+            "✅ **Pandey Colour Speciality:**\n"
+            "• Royal Play & Texture Designs\n"
+            "• PU Polish & Lamination\n"
+            "• Waterproofing Solutions\n\n"
+            "💡 *Tip:* Jo design aapko pasand aaye, uska screenshot humein bhej dein, hum bilkul waisa hi finishing bana kar denge!"
+        )
+        msg.body(response_text)
         )
         msg.body(response_text)
 
@@ -117,4 +127,5 @@ elif incoming_msg == '3':
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
 

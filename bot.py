@@ -72,16 +72,19 @@ def bot():
         )
         msg.body(response_text)
 
-    # --- 3. COLOR SELECTION ---
-    elif incoming_msg == '3':
-        response_text = (
-            "🎨 *Choose Your Perfect Shade*\n"
-            "━━━━━━━━━━━━━━━━━━\n\n"
-            "Apne ghar ke liye behtareen colour pasand karein:\n\n"
-            f"🌈 **Digital Shade Card:**\n{COLOR_LINK}\n\n"
-            "💡 *Tip:* Pasand kiye gaye colour ka code ya screenshot humein bhejein."
-        )
-        msg.body(response_text)
+   # 3. COLOR SELECTION SECTION
+elif incoming_msg == '3':
+    response_text = (
+        "🎨 *Choose Your Perfect Shade (Fantak)*\n"
+        "━━━━━━━━━━━━━━━━━━━\n\n"
+        "Apne ghar ke liye behtareen rang yahan se pasand karein:\n\n"
+        "✨ **Asian Paints (Digital Card):**\n"
+        "https://www.asianpaints.com/catalogue/colour-catalogue.html\n\n"
+        "✨ **Nerolac (Shade Card):**\n"
+        "https://www.nerolac.com/colour-palette-shade-card.html\n\n"
+        "💡 *Tip:* Jo colour pasand aaye, uska screenshot ya code humein yahan WhatsApp par bhejein!"
+    )
+    msg.body(response_text)
 
     # --- 4. LATEST DESIGNS ---
     elif incoming_msg == '4':
@@ -114,3 +117,4 @@ def bot():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+

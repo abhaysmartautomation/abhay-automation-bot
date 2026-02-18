@@ -4,13 +4,11 @@ import re
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS SECTION (Sirf Yahan Apna Drive Link Dalein)
+# 🛠️ SETTINGS SECTION
 # ==============================================================================
 
-# 🛑 YAHAN APNA GOOGLE DRIVE LINK PASTE KAREIN
-# (Wo lamba wala link jo aapne copy kiya hai)
-RAW_DRIVE_LINK = "https://docs.google.com/document/d/1mIZxc63-QFQZDVHXA-AwpeYYnS06Nqj44Xt-or5Ixh0/edit?usp=sharing
-"
+# ✅ Aapka naya Google Drive Link (Maine yahan daal diya hai)
+RAW_DRIVE_LINK = "https://drive.google.com/file/d/1NRm861WbxsTJFp_JyMsti_BsBg8ksESH/view?usp=sharing"
 
 # Rate List Link
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
@@ -19,14 +17,16 @@ RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=shari
 ALBUM_LINK = "https://wa.me/c/917046769047"
 
 # ==============================================================================
-# ⚙️ MAGIC ENGINE (Isse mat chedhna, ye link fix karega)
+# ⚙️ MAGIC ENGINE (Ye Link ko Image banayega - Isse mat chedhna)
 # ==============================================================================
 def get_direct_image(url):
     try:
-        # Link mein se ID nikal kar "Direct Image" link banana
-        file_id = url.split('/d/')[1].split('/')[0]
-        # Ye 'lh3' wala magic link WhatsApp par badi photo dikhata hai
-        return f"https://lh3.googleusercontent.com/d/{file_id}"
+        if "/d/" in url:
+            # Link mein se ID nikal kar Direct Link banana
+            file_id = url.split('/d/')[1].split('/')[0]
+            # Ye 'uc' wala link WhatsApp par image dikhata hai
+            return f"https://drive.google.com/uc?export=view&id={file_id}"
+        return url
     except:
         return url
 
@@ -45,10 +45,10 @@ def bot():
     cleaned_msg = re.sub(r'[^a-zA-Z0-9]', '', raw_msg).lower()
     response_text = ""
 
-    # --- 🏠 MAIN MENU (Badi Photo Sabse Upar) ---
-    if any(word in cleaned_msg for word in ['hi', 'hello', 'menu', 'start']) or not cleaned_msg:
+    # --- 🏠 MAIN MENU (Photo Sabse Upar) ---
+    if any(word in cleaned_msg for word in ['hi', 'hello', 'menu', 'start', 'namaste']) or not cleaned_msg:
         response_text = (
-            f"{FINAL_CARD_LINK}\n\n"  # 👈 Ye Magic Link photo dikhayega
+            f"{FINAL_CARD_LINK}\n\n"  # 👈 Ye Card ki photo dikhayega
             "✨ *Welcome to Pandey Colour* ✨\n"
             "_- Premium Interior & Exterior Finishes -_\n\n"
             "👤 **Prop:** Markandey Pandey\n"
@@ -66,7 +66,7 @@ def bot():
 
     elif '2' in cleaned_msg:
         response_text = (
-            f"{FINAL_CARD_LINK}\n\n" # Yahan bhi photo dikhegi
+            f"{FINAL_CARD_LINK}\n\n" # Yahan bhi card dikhega
             "📞 *Contact Details*\n"
             "👷‍♂️ **Markandey Pandey**\n📱 +91 70467 69047\n📍 211/-2 Krishnakunj Society, Surat."
         )

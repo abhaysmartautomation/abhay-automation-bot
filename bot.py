@@ -1,5 +1,4 @@
 from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
@@ -18,13 +17,16 @@ ALBUM_LINK = "https://wa.me/c/917046769047"
 
 # ==============================================================================
 
-@app.route("/bot", methods=['POST'])
+@app.route("/whatsapp", methods=['GET', 'POST']) # Route badal kar /whatsapp kar diya
 def bot():
-    # User ka message lena
-    incoming_msg = request.values.get('Body', '').lower().strip()
-    resp = MessagingResponse()
-    msg = resp.message()
+    # User ka message lena (GET aur POST dono handle honge)
+    if request.method == 'POST':
+        incoming_msg = request.form.get('Body', '').lower().strip()
+    else:
+        incoming_msg = request.args.get('Body', '').lower().strip()
     
+    response_text = ""
+
     # --- 🏠 MAIN MENU ---
     if incoming_msg in ['hi', 'hello', 'menu', 'start', 'namaste', 'hye']:
         response_text = (
@@ -33,26 +35,23 @@ def bot():
             "👤 **Prop:** Markandey Pandey\n"
             f"🪪 **Digital Card:** {VISITING_CARD_LINK}\n\n"
             "👇 *Krupaya ek option chunein:*\n\n"
-            "1️⃣ 📊 **Rates & Estimate** (Rate List PDF)\n"
-            "2️⃣ 📞 **Contact Details** (Address & Call)\n"
-            "3️⃣ 🎨 **Color Selection** (Fantak/Shades)\n"
-            "4️⃣ 🖼️ **Our Expertise & Album** (Latest Designs)\n"
-            "5️⃣ 💸 **Payment Details** (UPI/Bank)\n\n"
+            "1️⃣ 📊 **Rates & Estimate**\n"
+            "2️⃣ 📞 **Contact Details**\n"
+            "3️⃣ 🎨 **Color Selection** (Fantak)\n"
+            "4️⃣ 🖼️ **Our Expertise & Album**\n"
+            "5️⃣ 💸 **Payment Details**\n\n"
             "👉 _Reply with 1, 2, 3, 4 or 5_"
         )
-        msg.body(response_text)
 
     # --- 1. RATES ---
     elif incoming_msg == '1':
         response_text = (
             "📊 *Exclusive Rate List & Estimate*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
-            "Hamare standard rates ki jankari ke liye PDF download karein:\n\n"
             f"📥 **Download Rate Card:**\n{RATE_PDF_LINK}\n\n"
             "🔹 _Plastic Paint_ | _Royal Play_ | _PU Polish_\n\n"
             "💡 *Note:* Final estimate site visit ke baad diya jayega."
         )
-        msg.body(response_text)
 
     # --- 2. CONTACT DETAILS ---
     elif incoming_msg == '2':
@@ -62,40 +61,29 @@ def bot():
             "👷‍♂️ **Markandey Pandey**\n"
             "📱 +91 70467 69047\n"
             "📱 +91 90167 21639\n\n"
-            "📍 **Office Address:**\n"
-            "211/-2 Krishnakunj Society, Palanpur Jakatnaka, Surat.\n\n"
-            "🕒 *Timing:* 9:00 AM - 8:00 PM"
+            "📍 **Address:** 211/-2 Krishnakunj Society, Palanpur Jakatnaka, Surat."
         )
-        msg.body(response_text)
 
-    # --- 3. COLOR SELECTION (FANTAK) ---
+    # --- 3. COLOR SELECTION ---
     elif incoming_msg == '3':
         response_text = (
-            "🎨 *Choose Your Perfect Shade (Fantak)*\n"
-            "━━━━━━━━━━━━━━━━━━━\n\n"
-            "✨ **Asian Paints (Digital Card):**\n"
-            "https://www.asianpaints.com/catalogue/colour-catalogue.html\n\n"
-            "✨ **Nerolac (Shade Card):**\n"
-            "https://www.nerolac.com/colour-palette-shade-card.html\n\n"
-            "💡 *Tip:* Jo colour pasand aaye, uska screenshot humein bhejein!"
+            "🎨 *Color Shade Cards*\n"
+            "━━━━━━━━━━━━━━━━━━\n\n"
+            "✨ **Asian Paints:** https://www.asianpaints.com/catalogue/colour-catalogue.html\n"
+            "✨ **Nerolac:** https://www.nerolac.com/colour-palette-shade-card.html"
         )
-        msg.body(response_text)
 
     # --- 4. EXPERTISE & ALBUM ---
     elif incoming_msg == '4':
         response_text = (
             "🖼️ *Our Expertise & Portfolio* ✨\n"
             "━━━━━━━━━━━━━━━━━━━━\n\n"
-            "Hum premium quality finishing mein expert hain:\n\n"
-            "✅ **Pandey Colour Speciality:**\n"
             "• Royal Play & Texture Designs\n"
             "• PU Polish & Lamination Work\n"
             "• Waterproofing Solutions\n"
             "• **All Type Contracts & Best Service**\n\n"
-            f"📂 **View Our Album:** {ALBUM_LINK}\n\n"
-            "💡 *Tip:* Designs ke liye brand gallery bhi check karein!"
+            f"📂 **View Our Album:** {ALBUM_LINK}"
         )
-        msg.body(response_text)
 
     # --- 5. PAYMENT ---
     elif incoming_msg == '5':
@@ -104,15 +92,15 @@ def bot():
             "━━━━━━━━━━━━━━━━━━\n\n"
             "🏦 **UPI ID:** `7046769047@ybl`\n"
             "📱 **GPay / PhonePe:** 70467 69047\n\n"
-            "✅ *Payment ke baad screenshot bhejna na bhulein.*"
+            "✅ *Payment screenshot zaroor bhejein.*"
         )
-        msg.body(response_text)
 
-    # --- ❌ ERROR HANDLING ---
+    # --- ❌ ERROR ---
     else:
-        msg.body("❌ Galat option. Main Menu ke liye *'Hi'* likh kar bhejein.")
+        response_text = "❌ Galat option. Main Menu ke liye *'Hi'* likh kar bhejein."
 
-    return str(resp)
+    # Seedha text return kar rahe hain MacroDroid ke liye
+    return response_text
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

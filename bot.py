@@ -1,34 +1,44 @@
 from flask import Flask, request
+import re  # Ye zaroori hai text saaf karne ke liye
 
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS SECTION (Apne Links Yahan Paste Karein)
+# 🛠️ SETTINGS SECTION
 # ==============================================================================
 
-# 1. Naye Luxury Card ka Google Drive link yahan dalein
-VISITING_CARD_LINK = "https://drive.google.com/file/d/YOUR_NEW_IMAGE_ID/view?usp=sharing"
+# 1. Aapka Premium Visiting Card Link (Maine add kar diya hai)
+VISITING_CARD_LINK = "http://googleusercontent.com/image_generation_content/1"
 
-# 2. Rate List PDF ka Google Drive link yahan dalein
+# 2. Rate List PDF Link (Isse aap baad mein apne Drive link se badal lena)
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
 
-# 3. WhatsApp Catalog ya Instagram Album ka link yahan dalein
+# 3. Album Link
 ALBUM_LINK = "https://wa.me/c/917046769047"
 
 # ==============================================================================
 
-@app.route("/whatsapp", methods=['GET', 'POST']) # Route badal kar /whatsapp kar diya
+@app.route("/whatsapp", methods=['GET', 'POST'])
 def bot():
-    # User ka message lena (GET aur POST dono handle honge)
+    # Step 1: Message receive karna (Chahe GET ho ya POST)
     if request.method == 'POST':
-        incoming_msg = request.form.get('Body', '').lower().strip()
+        raw_msg = request.form.get('Body', '')
     else:
-        incoming_msg = request.args.get('Body', '').lower().strip()
-    
+        raw_msg = request.args.get('Body', '')
+
+    # Step 2: "SUPER CLEANING" Logic
+    # Ye line message me se space, *, ., ! sab hata degi.
+    # Agar user ne "*Hi*" bheja -> toh wo "hi" ban jayega.
+    cleaned_msg = re.sub(r'[^a-zA-Z0-9]', '', raw_msg).lower()
+
     response_text = ""
 
     # --- 🏠 MAIN MENU ---
-    if incoming_msg in ['hi', 'hello', 'menu', 'start', 'namaste', 'hye']:
+    # Agar message me 'hi', 'menu', 'start' jaisa kuch bhi ho
+    menu_keywords = ['hi', 'hello', 'menu', 'start', 'namaste', 'hye', 'hey']
+    
+    # Check: Agar message khali hai YA inme se koi word hai
+    if not cleaned_msg or any(word in cleaned_msg for word in menu_keywords):
         response_text = (
             "✨ *Welcome to Pandey Colour* ✨\n"
             "_- Premium Interior & Exterior Finishes -_\n\n"
@@ -44,7 +54,7 @@ def bot():
         )
 
     # --- 1. RATES ---
-    elif incoming_msg == '1':
+    elif '1' in cleaned_msg:
         response_text = (
             "📊 *Exclusive Rate List & Estimate*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
@@ -53,10 +63,10 @@ def bot():
             "💡 *Note:* Final estimate site visit ke baad diya jayega."
         )
 
-    # --- 2. CONTACT DETAILS ---
-    elif incoming_msg == '2':
+    # --- 2. CONTACT ---
+    elif '2' in cleaned_msg:
         response_text = (
-            "📞 *Get in Touch* \n"
+            "📞 *Contact Details*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
             "👷‍♂️ **Markandey Pandey**\n"
             "📱 +91 70467 69047\n"
@@ -65,7 +75,7 @@ def bot():
         )
 
     # --- 3. COLOR SELECTION ---
-    elif incoming_msg == '3':
+    elif '3' in cleaned_msg:
         response_text = (
             "🎨 *Color Shade Cards*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
@@ -73,8 +83,8 @@ def bot():
             "✨ **Nerolac:** https://www.nerolac.com/colour-palette-shade-card.html"
         )
 
-    # --- 4. EXPERTISE & ALBUM ---
-    elif incoming_msg == '4':
+    # --- 4. EXPERTISE ---
+    elif '4' in cleaned_msg:
         response_text = (
             "🖼️ *Our Expertise & Portfolio* ✨\n"
             "━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -86,7 +96,7 @@ def bot():
         )
 
     # --- 5. PAYMENT ---
-    elif incoming_msg == '5':
+    elif '5' in cleaned_msg:
         response_text = (
             "💸 *Payment Information*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
@@ -95,11 +105,14 @@ def bot():
             "✅ *Payment screenshot zaroor bhejein.*"
         )
 
-    # --- ❌ ERROR ---
+    # --- ❌ ERROR HANDLING ---
     else:
-        response_text = "❌ Galat option. Main Menu ke liye *'Hi'* likh kar bhejein."
+        # Ye aapko batayega ki server ne kya receive kiya jo galat tha
+        response_text = (
+            f"❌ Option '{raw_msg}' samajh nahi aaya.\n"
+            "Krupaya Main Menu ke liye *'Hi'* likh kar bhejein."
+        )
 
-    # Seedha text return kar rahe hain MacroDroid ke liye
     return response_text
 
 if __name__ == "__main__":

@@ -4,26 +4,23 @@ from twilio.twiml.messaging_response import MessagingResponse
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS SECTION (Apne Links Sirf Yahan Badle)
+# 🛠️ SETTINGS SECTION (Apne Links Yahan Paste Karein)
 # ==============================================================================
 
-# 1. Apni Rate List PDF ka Google Drive link yahan quotes " " ke beech dalein
-RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
+# 1. Naye Luxury Card ka Google Drive link yahan dalein
+VISITING_CARD_LINK = "https://drive.google.com/file/d/YOUR_NEW_IMAGE_ID/view?usp=sharing"
 
-# 2. Apni Digital Visiting Card ka link yahan dalein
-VISITING_CARD_LINK = "https://your-visiting-card-link.com"
+# 2. Rate List PDF ka Google Drive link yahan dalein
+RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
 
 # 3. WhatsApp Catalog ya Instagram Album ka link yahan dalein
 ALBUM_LINK = "https://wa.me/c/917046769047"
-
-# 4. Color Shade Card Link (Asian Paints/Nerolac)
-COLOR_LINK = "https://www.asianpaints.com/catalogue/colour-catalogue.html"
 
 # ==============================================================================
 
 @app.route("/bot", methods=['POST'])
 def bot():
-    # User ka message clean format mein lena
+    # User ka message lena
     incoming_msg = request.values.get('Body', '').lower().strip()
     resp = MessagingResponse()
     msg = resp.message()
@@ -39,19 +36,19 @@ def bot():
             "1️⃣ 📊 **Rates & Estimate** (Rate List PDF)\n"
             "2️⃣ 📞 **Contact Details** (Address & Call)\n"
             "3️⃣ 🎨 **Color Selection** (Fantak/Shades)\n"
-            "4️⃣ 🖼️ **Our Work Album** (Latest Designs)\n"
+            "4️⃣ 🖼️ **Our Expertise & Album** (Latest Designs)\n"
             "5️⃣ 💸 **Payment Details** (UPI/Bank)\n\n"
             "👉 _Reply with 1, 2, 3, 4 or 5_"
         )
         msg.body(response_text)
 
-    # --- 1. RATES (PDF LINK) ---
+    # --- 1. RATES ---
     elif incoming_msg == '1':
         response_text = (
             "📊 *Exclusive Rate List & Estimate*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
-            "Hamare standard rates aur services ki jankari ke liye neeche di gayi PDF download karein:\n\n"
-            f"📥 **Download Rate Card (PDF):**\n{RATE_PDF_LINK}\n\n"
+            "Hamare standard rates ki jankari ke liye PDF download karein:\n\n"
+            f"📥 **Download Rate Card:**\n{RATE_PDF_LINK}\n\n"
             "🔹 _Plastic Paint_ | _Royal Play_ | _PU Polish_\n\n"
             "💡 *Note:* Final estimate site visit ke baad diya jayega."
         )
@@ -62,48 +59,41 @@ def bot():
         response_text = (
             "📞 *Get in Touch* \n"
             "━━━━━━━━━━━━━━━━━━\n\n"
-            "👷‍♂️ **Markandey Pandey** (Senior Contractor)\n"
+            "👷‍♂️ **Markandey Pandey**\n"
             "📱 +91 70467 69047\n"
             "📱 +91 90167 21639\n\n"
             "📍 **Office Address:**\n"
-            "211/-2 Krishnakunj Society,\n"
-            "Palanpur Jakatnaka, Surat, Gujarat.\n\n"
+            "211/-2 Krishnakunj Society, Palanpur Jakatnaka, Surat.\n\n"
             "🕒 *Timing:* 9:00 AM - 8:00 PM"
         )
         msg.body(response_text)
 
-   # 3. COLOR SELECTION SECTION
-elif incoming_msg == '3':
-    response_text = (
-        "🎨 *Choose Your Perfect Shade (Fantak)*\n"
-        "━━━━━━━━━━━━━━━━━━━\n\n"
-        "Apne ghar ke liye behtareen rang yahan se pasand karein:\n\n"
-        "✨ **Asian Paints (Digital Card):**\n"
-        "https://www.asianpaints.com/catalogue/colour-catalogue.html\n\n"
-        "✨ **Nerolac (Shade Card):**\n"
-        "https://www.nerolac.com/colour-palette-shade-card.html\n\n"
-        "💡 *Tip:* Jo colour pasand aaye, uska screenshot ya code humein yahan WhatsApp par bhejein!"
-    )
-    msg.body(response_text)
-
-    # --- 4. LATEST DESIGNS ---
-   # --- 4. LATEST DESIGNS (Using Brand Galleries) ---
-    elif incoming_msg == '4':
+    # --- 3. COLOR SELECTION (FANTAK) ---
+    elif incoming_msg == '3':
         response_text = (
-            "🖼️ *Our Expertise & Design Gallery* ✨\n"
-            "━━━━━━━━━━━━━━━━━━━━\n\n"
-            "Hum premium quality finishing mein expert hain. Aap neeche diye gaye links se apne ghar ke liye trendy designs pasand kar sakte hain:\n\n"
-            "🎭 **Royal Play & Wall Textures:**\n"
-            "https://www.asianpaints.com/products/paints-and-textures/wall-textures.html\n\n"
-            "💎 **Premium PU Polish & Interior Finishes:**\n"
-            "https://www.nerolac.com/inspiration/gallery.html\n\n"
-            "✅ **Pandey Colour Speciality:**\n"
-            "• Royal Play & Texture Designs\n"
-            "• PU Polish & Lamination\n"
-            "• Waterproofing Solutions\n\n"
-            "💡 *Tip:* Jo design aapko pasand aaye, uska screenshot humein bhej dein, hum bilkul waisa hi finishing bana kar denge!"
+            "🎨 *Choose Your Perfect Shade (Fantak)*\n"
+            "━━━━━━━━━━━━━━━━━━━\n\n"
+            "✨ **Asian Paints (Digital Card):**\n"
+            "https://www.asianpaints.com/catalogue/colour-catalogue.html\n\n"
+            "✨ **Nerolac (Shade Card):**\n"
+            "https://www.nerolac.com/colour-palette-shade-card.html\n\n"
+            "💡 *Tip:* Jo colour pasand aaye, uska screenshot humein bhejein!"
         )
         msg.body(response_text)
+
+    # --- 4. EXPERTISE & ALBUM ---
+    elif incoming_msg == '4':
+        response_text = (
+            "🖼️ *Our Expertise & Portfolio* ✨\n"
+            "━━━━━━━━━━━━━━━━━━━━\n\n"
+            "Hum premium quality finishing mein expert hain:\n\n"
+            "✅ **Pandey Colour Speciality:**\n"
+            "• Royal Play & Texture Designs\n"
+            "• PU Polish & Lamination Work\n"
+            "• Waterproofing Solutions\n"
+            "• **All Type Contracts & Best Service**\n\n"
+            f"📂 **View Our Album:** {ALBUM_LINK}\n\n"
+            "💡 *Tip:* Designs ke liye brand gallery bhi check karein!"
         )
         msg.body(response_text)
 
@@ -112,20 +102,17 @@ elif incoming_msg == '3':
         response_text = (
             "💸 *Payment Information*\n"
             "━━━━━━━━━━━━━━━━━━\n\n"
-            "Payment karne ke liye neeche diye gaye details use karein:\n\n"
             "🏦 **UPI ID:** `7046769047@ybl`\n"
             "📱 **GPay / PhonePe:** 70467 69047\n\n"
             "✅ *Payment ke baad screenshot bhejna na bhulein.*"
         )
         msg.body(response_text)
 
-    # --- ❌ ERROR / UNKNOWN INPUT ---
+    # --- ❌ ERROR HANDLING ---
     else:
-        msg.body("❌ Maaf karein, yeh option galat hai.\n\nMenu dekhne ke liye *'Hi'* likh kar bhejein.")
+        msg.body("❌ Galat option. Main Menu ke liye *'Hi'* likh kar bhejein.")
 
     return str(resp)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-
-

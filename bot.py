@@ -8,7 +8,7 @@ app = Flask(__name__)
 # ==============================================================================
 
 # 1. Aapka Premium Visiting Card Link (Maine add kar diya hai)
-VISITING_CARD_LINK = "https://docs.google.com/document/d/1mIZxc63-QFQZDVHXA-AwpeYYnS06Nqj44Xt-or5Ixh0/edit?tab=t.0"
+VISITING_CARD_LINK = "https://github.com/abhaysmartautomation/abhay-automation-bot/edit/main/Screenshot_17-2-2026_0613_.jpeg"
 
 # 2. Rate List PDF Link (Isse aap baad mein apne Drive link se badal lena)
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
@@ -35,7 +35,7 @@ def bot():
 
     # --- 🏠 MAIN MENU ---
     # Agar message me 'hi', 'menu', 'start' jaisa kuch bhi ho
-    menu_keywords = ['hi', 'hello', 'menu', 'start', 'namaste', 'hye', 'hey']
+    menu_keywords = ['hi', 'hello', 'menu', 'start', 'namaste', 'hye', 'hey','hii','hiii','h','pandey']
     
     # Check: Agar message khali hai YA inme se koi word hai
     if not cleaned_msg or any(word in cleaned_msg for word in menu_keywords):
@@ -48,7 +48,6 @@ def bot():
             "1️⃣ 📊 **Rates & Estimate**\n"
             "2️⃣ 📞 **Contact Details**\n"
             "3️⃣ 🎨 **Color Selection** (Fantak)\n"
-            "4️⃣ 🖼️ **Our Expertise & Album**\n"
             "5️⃣ 💸 **Payment Details**\n\n"
             "👉 _Reply with 1, 2, 3, 4 or 5_"
         )
@@ -83,18 +82,6 @@ def bot():
             "✨ **Nerolac:** https://www.nerolac.com/colour-palette-shade-card.html"
         )
 
-    # --- 4. EXPERTISE ---
-    elif '4' in cleaned_msg:
-        response_text = (
-            "🖼️ *Our Expertise & Portfolio* ✨\n"
-            "━━━━━━━━━━━━━━━━━━━━\n\n"
-            "• Royal Play & Texture Designs\n"
-            "• PU Polish & Lamination Work\n"
-            "• Waterproofing Solutions\n"
-            "• **All Type Contracts & Best Service**\n\n"
-            f"📂 **View Our Album:** {ALBUM_LINK}"
-        )
-
     # --- 5. PAYMENT ---
     elif '5' in cleaned_msg:
         response_text = (
@@ -117,4 +104,5 @@ def bot():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
 

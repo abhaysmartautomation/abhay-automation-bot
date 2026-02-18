@@ -8,7 +8,7 @@ app = Flask(__name__)
 # ==============================================================================
 
 # 1. Aapka Premium Visiting Card Link (Maine add kar diya hai)
-VISITING_CARD_LINK = "http://googleusercontent.com/image_generation_content/1"
+VISITING_CARD_LINK = "https://docs.google.com/document/d/1mIZxc63-QFQZDVHXA-AwpeYYnS06Nqj44Xt-or5Ixh0/edit?tab=t.0"
 
 # 2. Rate List PDF Link (Isse aap baad mein apne Drive link se badal lena)
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
@@ -117,3 +117,4 @@ def bot():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+

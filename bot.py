@@ -6,91 +6,87 @@ app = Flask(__name__)
 # ==============================================================================
 # 🛠️ SETTINGS SECTION
 # ==============================================================================
-
-# ✅ Aapka naya Google Drive Link (Maine yahan daal diya hai)
 RAW_DRIVE_LINK = "https://drive.google.com/file/d/1NRm861WbxsTJFp_JyMsti_BsBg8ksESH/view?usp=sharing"
-
-# Rate List Link
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
 
-# Album Link
-ALBUM_LINK = "https://wa.me/c/917046769047"
-
-# ==============================================================================
-# ⚙️ MAGIC ENGINE (Ye Link ko Image banayega - Isse mat chedhna)
-# ==============================================================================
 def get_direct_image(url):
     try:
         if "/d/" in url:
-            # Link mein se ID nikal kar Direct Link banana
             file_id = url.split('/d/')[1].split('/')[0]
-            # Ye 'uc' wala link WhatsApp par image dikhata hai
-            return f"https://drive.google.com/uc?export=view&id={file_id}"
+            return f"https://lh3.googleusercontent.com/d/{file_id}"
         return url
     except:
         return url
 
-# Code start hote hi Link ko convert kar lega
 FINAL_CARD_LINK = get_direct_image(RAW_DRIVE_LINK)
 
 @app.route("/whatsapp", methods=['GET', 'POST'])
 def bot():
-    # MacroDroid se message lena
     if request.method == 'POST':
         raw_msg = request.form.get('Body', '')
     else:
         raw_msg = request.args.get('Body', '')
 
-    # Message saaf karna
-    cleaned_msg = re.sub(r'[^a-zA-Z0-9]', '', raw_msg).lower()
-    response_text = ""
-
-    # --- 🏠 MAIN MENU (Photo Sabse Upar) ---
-    if any(word in cleaned_msg for word in ['hi', 'hello', 'menu', 'start', 'namaste']) or not cleaned_msg:
-        response_text = (
-            f"{FINAL_CARD_LINK}\n\n"  # 👈 Ye Card ki photo dikhayega
-            "✨ *Welcome to Pandey Colour* ✨\n"
-            "_- Premium Interior & Exterior Finishes -_\n\n"
-            "👤 **Prop:** Markandey Pandey\n"
-            "👇 *Krupaya ek option chunein:*\n\n"
-            "1️⃣ 📊 **Rates & Estimate**\n"
-            "2️⃣ 📞 **Contact Details**\n"
-            "3️⃣ 🎨 **Color Selection**\n"
-            "4️⃣ 🖼️ **Our Expertise & Album**\n"
-            "5️⃣ 💸 **Payment Details**"
+    # Message ko saaf karna (Lowercase aur spaces hatana)
+    msg = re.sub(r'[^a-zA-Z0-9]', '', raw_msg).lower()
+    
+    # --- 1. RATES (Keywords: 1, rate, price, kitna, paisa) ---
+    if any(x in msg for x in ['1', 'rate', 'price', 'kitna', 'cost', 'estimate']):
+        return (
+            "╔══════════════════════╗\n"
+            "   📊  *RATE LIST & ESTIMATE*\n"
+            "╚══════════════════════╝\n\n"
+            "Hamari latest rate list download karein:\n\n"
+            f"📥 *LINK:* {RATE_PDF_LINK}\n\n"
+            "➖➖➖➖➖➖➖➖➖➖➖➖"
         )
 
-    # --- OPTIONS ---
-    elif '1' in cleaned_msg:
-        response_text = f"📊 *Rate List & Estimate*\n\n📥 Download: {RATE_PDF_LINK}"
-
-    elif '2' in cleaned_msg:
-        response_text = (
-            f"{FINAL_CARD_LINK}\n\n" # Yahan bhi card dikhega
-            "📞 *Contact Details*\n"
-            "👷‍♂️ **Markandey Pandey**\n📱 +91 70467 69047\n📍 211/-2 Krishnakunj Society, Surat."
+    # --- 2. COLORS (Keywords: 2, color, shade, paint, catalogue) ---
+    elif any(x in msg for x in ['2', 'color', 'shade', 'paint', 'design', 'catalogue']):
+        return (
+            "╔══════════════════════╗\n"
+            "   🎨  *CHOOSE YOUR COLOUR*\n"
+            "╚══════════════════════╝\n\n"
+            "🏠 *Asian Paints:* https://bit.ly/AsianPaints-Catalogue\n"
+            "🏢 *Nerolac:* https://bit.ly/Nerolac-Shades\n\n"
+            "*✨YE COMPANY KA ONLINE FANTAK FOR COLOUR CONFORMATION✨" 
+            "➖➖➖➖➖➖➖➖➖➖➖➖"
         )
 
-    elif '3' in cleaned_msg:
-        response_text = "🎨 *Color Shade Cards*\n\nAsian Paints: https://www.asianpaints.com/catalogue/colour-catalogue.html"
-
-    elif '4' in cleaned_msg:
-        response_text = (
-            "🖼️ *Our Expertise & Album* ✨\n\n"
-            "• Royal Play & Texture Designs\n"
-            "• PU Polish & Lamination\n"
-            "• Waterproofing Solutions\n"
-            "• **All Type Contracts**\n\n"
-            f"📂 **Album:** {ALBUM_LINK}"
+    # --- 3. CONTACT & PAYMENT (Keywords: 3, contact, payment, upi, gpay, phonepe, call, number) ---
+    elif any(x in msg for x in ['3', 'contact', 'payment', 'upi', 'gpay', 'phonepe', 'call', 'number', 'pay']):
+        return (
+            "╔══════════════════════╗\n"
+            "   📞  *CONTACT DETAILS*\n"
+            "╚══════════════════════╝\n"
+            "👤 *Markandey Pandey*\n"
+            "📱 *Direct Call/Chat:* https://wa.me/917046769047\n"
+            "📱 *Office:* https://wa.me/919016721639\n"
+            "➖➖➖➖➖➖➖➖➖➖➖➖\n"
+            "╔══════════════════════╗\n"
+            "   💸  *PAYMENT INFO*\n"
+            "╚══════════════════════╝\n"
+            "🔹 *Click to Pay:* \n"
+            "https://upilinks.in/payment-button/7046769047@ybl \n\n"
+            "👆 _Upar link par click karke GPay/PhonePe chunein_\n\n"
+            "✅ *Payment ke baad screenshot bhejein.*"
         )
 
-    elif '5' in cleaned_msg:
-        response_text = "💸 *Payment*\nUPI: `7046769047@ybl`\nGPay: 70467 69047"
-
+    # --- 🏠 MAIN MENU (Keywords: hi, hello, menu, start, ya kuch aur) ---
     else:
-        response_text = "❌ Galat option. Main Menu ke liye *'Hi'* bhejein."
-
-    return response_text
+        return (
+            "✨ *WELCOME TO PANDEY COLOURS* ✨\n"
+            "   _Premium Interior & Exterior Finishes_\n\n"
+            f"{FINAL_CARD_LINK}\n"
+            "━━━━━━━━━━━━━━━━━━━━━━━\n"
+            "👤 **Prop:** Markandey Pandey\n"
+            "━━━━━━━━━━━━━━━━━━━━━━━\n"
+            "👇 *Krupaya ek option chunein:*\n\n"
+            "1️⃣  📊  **Rates & Estimate**\n"
+            "2️⃣  🎨  **Color Selection**\n"
+            "3️⃣  📞  **Contact & Payment**\n\n"
+            "👉 _Reply with 1, 2 or 3_"
+        )
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

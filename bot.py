@@ -4,7 +4,7 @@ import re
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS SECTION
+# 🛠️ SETTINGS
 # ==============================================================================
 RAW_DRIVE_LINK = "https://drive.google.com/file/d/1NRm861WbxsTJFp_JyMsti_BsBg8ksESH/view?usp=sharing"
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
@@ -27,65 +27,63 @@ def bot():
     else:
         raw_msg = request.args.get('Body', '')
 
-    # Message ko saaf karna (Lowercase aur spaces hatana)
     msg = re.sub(r'[^a-zA-Z0-9]', '', raw_msg).lower()
-    
-    # --- 1. RATES (Keywords: 1, rate, price, kitna, paisa) ---
+
+    # --- 1. RATES ---
     if any(x in msg for x in ['1', 'rate', 'price', 'kitna', 'cost', 'estimate']):
         return (
-            "╔══════════════════════╗\n"
-            "   📊  *RATE LIST & ESTIMATE*\n"
-            "╚══════════════════════╝\n\n"
-            "Hamari latest rate list download karein:\n\n"
-            f"📥 *LINK:* {RATE_PDF_LINK}\n\n"
-            "➖➖➖➖➖➖➖➖➖➖➖➖"
+            "📊 *RATES & ESTIMATES*\n"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
+            "Review our standard pricing and project estimates.\n\n"
+            "📥 *Download Latest Rate List:*\n"
+            f"{RATE_PDF_LINK}\n\n"
+            "_Note: Final estimates may vary based on site inspection._"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
         )
 
-    # --- 2. COLORS (Keywords: 2, color, shade, paint, catalogue) ---
+    # --- 2. COLORS ---
     elif any(x in msg for x in ['2', 'color', 'shade', 'paint', 'design', 'catalogue']):
         return (
-            "╔══════════════════════╗\n"
-            "   🎨  *CHOOSE YOUR COLOUR*\n"
-            "╚══════════════════════╝\n\n"
-            "🏠 *Asian Paints:* https://bit.ly/AsianPaints-Catalogue\n"
-            "🏢 *Nerolac:* https://bit.ly/Nerolac-Shades\n\n"
-            "*✨YE COMPANY KA ONLINE FANTAK FOR COLOUR CONFORMATION✨" 
-            "➖➖➖➖➖➖➖➖➖➖➖➖"
+            "🎨 *COLOR CATALOGUES*\n"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
+            "Explore shade cards from premium brands:\n\n"
+            "🔸 *Asian Paints:*\n"
+            "🔗 https://bit.ly/AsianPaints-Catalogue\n\n"
+            "🔸 *Kansai Nerolac:*\n"
+            "🔗 https://bit.ly/Nerolac-Shades"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
         )
 
-    # --- 3. CONTACT & PAYMENT (Keywords: 3, contact, payment, upi, gpay, phonepe, call, number) ---
+    # --- 3. CONTACT & PAYMENT ---
     elif any(x in msg for x in ['3', 'contact', 'payment', 'upi', 'gpay', 'phonepe', 'call', 'number', 'pay']):
         return (
-            "╔══════════════════════╗\n"
-            "   📞  *CONTACT DETAILS*\n"
-            "╚══════════════════════╝\n"
-            "👤 *Markandey Pandey*\n"
-            "📱 *Direct Call/Chat:* https://wa.me/917046769047\n"
-            "📱 *Office:* https://wa.me/919016721639\n"
-            "➖➖➖➖➖➖➖➖➖➖➖➖\n"
-            "╔══════════════════════╗\n"
-            "   💸  *PAYMENT INFO*\n"
-            "╚══════════════════════╝\n"
-            "🔹 *Click to Pay:* \n"
-            "https://upilinks.in/payment-button/7046769047@ybl \n\n"
-            "👆 _Upar link par click karke GPay/PhonePe chunein_\n\n"
-            "✅ *Payment ke baad screenshot bhejein.*"
+            "📞 *CONTACT INFORMATION*\n"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
+            "👤 *Markandey Pandey* (Senior Contractor)\n"
+            "▪️ *Chat / Call:* https://wa.me/917046769047\n"
+            "▪️ *Direct Desk:* https://wa.me/919016721639\n\n"
+            "💳 *SECURE PAYMENT*\n"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
+            "▪️ *UPI ID:* `7046769047@ybl`\n"
+            "▪️ *1-Click Pay:* https://upilinks.in/payment-button/7046769047@ybl\n\n"
+            "✅ _Kindly share a transaction screenshot once completed._"
         )
 
-    # --- 🏠 MAIN MENU (Keywords: hi, hello, menu, start, ya kuch aur) ---
+    # --- 🏠 MAIN MENU ---
     else:
         return (
-            "✨ *WELCOME TO PANDEY COLOURS* ✨\n"
-            "   _Premium Interior & Exterior Finishes_\n\n"
-            f"{FINAL_CARD_LINK}\n"
-            "━━━━━━━━━━━━━━━━━━━━━━━\n"
-            "👤 **Prop:** Markandey Pandey\n"
-            "━━━━━━━━━━━━━━━━━━━━━━━\n"
-            "👇 *Krupaya ek option chunein:*\n\n"
-            "1️⃣  📊  **Rates & Estimate**\n"
-            "2️⃣  🎨  **Color Selection**\n"
-            "3️⃣  📞  **Contact & Payment**\n\n"
-            "👉 _Reply with 1, 2 or 3_"
+            "🏢 *PANDEY COLOURS*\n"
+            "_Premium Interior & Exterior Finishes_\n"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
+            f"visiting card »» {FINAL_CARD_LINK}\n\n"
+            "Hello! Welcome to our digital desk.\n"
+            "👤 *Prop:* Markandey Pandey\n\n"
+            "Please select an option from our service menu below:\n\n"
+            "1️⃣ 📊 *Rates & Estimates*\n"
+            "2️⃣ 🎨 *Color Catalogues*\n"
+            "3️⃣ 📞 *Contact & Secure Payment*\n\n"
+            "💬 _Reply with 1, 2, or 3 to proceed._"
+            "━━━━━━━━━━━━━━━━━━━━━━\n"
         )
 
 if __name__ == "__main__":

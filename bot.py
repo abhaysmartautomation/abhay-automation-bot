@@ -4,7 +4,7 @@ import re
 app = Flask(__name__)
 
 # ==============================================================================
-# 🛠️ SETTINGS
+# 🛠️  
 # ==============================================================================
 RAW_DRIVE_LINK = "https://drive.google.com/file/d/1NRm861WbxsTJFp_JyMsti_BsBg8ksESH/view?usp=sharing"
 RATE_PDF_LINK = "https://drive.google.com/file/d/YOUR_PDF_ID_HERE/view?usp=sharing"
@@ -89,4 +89,5 @@ def bot():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
 

@@ -62,6 +62,7 @@ def bot():
             "👤 *Markandey Pandey* (Senior Contractor)\n"
             "▪️ *Chat / Call:* https://wa.me/917046769047\n"
             "▪️ *Direct Desk:* https://wa.me/919016721639\n\n"
+            "📍 *Google Map:* https://share.google/AOkUznH9ukLIQSYkU\n\n" # 👈 AAPKA LINK YAHAN HAI
             "💳 *SECURE PAYMENT*\n"
             "━━━━━━━━━━━━━━━━━━━━━━\n"
             "▪️ *UPI ID:* `7046769047@ybl`\n"
@@ -88,3 +89,4 @@ def bot():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
